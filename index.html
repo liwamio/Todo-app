@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>To do App</title>
+</head>
+<body ng-app="Liwam">
+
+      <div ng-controller="liwamController">
+        <form ng-submit="add()">
+            <input type="text" placeholder="To do" ng-model="task">
+            <button type="submit">Add +</button>
+        </form>
+         <form>
+            <button ng-click="setFilter('All')">All</button>
+            <button ng-click="setFilter('Done')">Done</button>
+            <button ng-click="setFilter('Undone')">Undone</button>
+         </form>
+        <ul>
+            <li ng-repeat = "task in taskList track by $index">
+                <input type = "checkbox" ng-click="toggle(task.id)" ng-model="task.done">
+                <span ng-bind="task.task"></span>
+                <button ng-click="remove(task.id)">Remove X</button>
+            </li>
+        </ul>
+      </div>
+
+<script type="text/javascript" src="angular.min.js"></script>
+<script type="text/javascript" src="app.js"></script>
+<script type="text/javascript" src="Todo.service.js"></script>
+</body>
+</html>
