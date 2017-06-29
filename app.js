@@ -8,7 +8,7 @@
         .controller('liwamController',liwamController);
     liwamController.$inject = ['$scope','Todo','$timeout'];
     function liwamController ($scope,Todo,$timeout){
-             $scope.taskList = []
+             $scope.taskList = [];
              $scope.taskListLength = 0;
              $scope.task = '';
              $scope.Filter = 'All';
@@ -53,7 +53,6 @@
                 $scope.Filter  = filter;
                 manageList();
             },
-
             Todo.subscribe($scope,function() {
                 Todo.getTask().then(function (tasks) {
                   $timeout(function(){
@@ -65,11 +64,6 @@
                 });
                 });
             });
-
-
         };
-
-
-
 })(window.angular);
 
