@@ -12,6 +12,7 @@
              $scope.taskListLength = 0;
              $scope.task = '';
              $scope.Filter = 'All';
+             $scope.compeleted = 0;
 
             const manageList = function() {
                 Todo.getTask().then(function(tasks){
@@ -33,6 +34,8 @@
                 })
             }
 
+           manageList();
+
             $scope.add = function(){
                 $scope.taskList = Todo.addTask($scope.task);
                 $scope.task = '';
@@ -44,6 +47,7 @@
 
             $scope.toggle = function (taskId){
                 Todo.updateWhenToogled(taskId);
+             },
 
             $scope.setFilter = function(filter){
                 $scope.Filter  = filter;
@@ -64,6 +68,8 @@
 
 
         };
+
+
 
 })(window.angular);
 
