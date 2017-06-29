@@ -6,9 +6,10 @@
     angular.module('Liwam',['TodoService']);
     angular.module('Liwam')
         .controller('liwamController',liwamController);
-    liwamController.$inject = ['$scope','Todo'];
-    function liwamController ($scope,Todo){
-             $scope.taskList = Todo.getTask();
+    liwamController.$inject = ['$scope','Todo','$timeout'];
+    function liwamController ($scope,Todo,$timeout){
+             $scope.taskList = []
+             $scope.taskListLength = 0;
              $scope.task = '';
              $scope.Filter = 'All';
 
