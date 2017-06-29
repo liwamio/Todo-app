@@ -32,6 +32,9 @@
               task: task,
               done: false
               });
+            syncToLocalStorage().then(function(){
+                $rootScope.$emit(EVENT);
+            });
               return angular.copy(taskList);
         },
         getTask: function(){
@@ -56,7 +59,9 @@
             }
             if(removeIndex !=-1)
             taskList.splice(removeIndex,1);
-
+            syncToLocalStorage().then(function(){
+                $rootScope.$emit(EVENT);
+            });
         },
 
         updateWhenToogled: function(taskId){
@@ -67,6 +72,17 @@
                 }
             }
             taskList[toogleIndex].done = !taskList[toogleIndex].done;
+            syncToLocalStorage().then(function(){
+                $rootScope.$emit(EVENT);
+            });
+        },
+        event: function(){
+            $rootScope.$emit(EVENT);
+        },
+        subscribe: function(scope, callback){
+            const unsubscribe = $rootScope.$on(EVENT,callback);
+            scope.$on('$destroy',unsubscribe);
+            return unsubscribe;
         },
 
 
