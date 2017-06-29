@@ -10,6 +10,7 @@
         <form ng-submit="add()">
             <input type="text" placeholder="To do" ng-model="task">
             <button type="submit">Add +</button>
+            <span ng-bind="compeleted"></span>/<span ng-bind="taskListLength"></span>
         </form>
          <form>
             <button ng-click="setFilter('All')">All</button>
@@ -25,8 +26,9 @@
         </ul>
       </div>
 
-<script type="text/javascript" src="angular.min.js"></script>
-<script type="text/javascript" src="app.js"></script>
-<script type="text/javascript" src="Todo.service.js"></script>
+  <script type="text/javascript" src="localforage.min.js"></script>
+  <script type="text/javascript" src="angular.min.js"></script>
+  <script type="text/javascript" src="app.js"></script>
+  <script type="text/javascript" src="Todo.service.js"></script>
 </body>
 </html>
