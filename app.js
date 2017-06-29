@@ -13,18 +13,23 @@
              $scope.task = '';
              $scope.Filter = 'All';
 
-            const manageList = function(){
-                $scope.taskList = Todo.getTask().filter(function(task){
-                    switch($scope.Filter){
-                        case 'All':
-                            return true;
-                        case 'Done':
-                            return task.done;
-                        case 'Undone':
-                            return !task.done;
-                        default:
-                            return true;
-                    }
+            const manageList = function() {
+                Todo.getTask().then(function(tasks){
+                    $timeout(function(){
+                        $scope.taskList = tasks.filter(function (task) {
+                            switch ($scope.Filter) {
+                                case 'All':
+                                    return true;
+                                case 'Done':
+                                    return task.done;
+                                case 'Undone':
+                                    return !task.done;
+                                default:
+                                    return true;
+                            }
+                        });
+                    });
+                    Todo.event();
                 })
             }
 
@@ -45,7 +50,20 @@
             $scope.setFilter = function(filter){
                 $scope.Filter  = filter;
                 manageList();
-            }
+            },
+
+            Todo.subscribe($scope,function() {
+                Todo.getTask().then(function (tasks) {
+                  $timeout(function(){
+                    $scope.compeleted = tasks.filter(function (task) {
+                        return task.done;
+                    }).length;
+                    $scope.taskListLength = tasks.length;
+                    manageList();
+                });
+                });
+            });
+
 
         };
 
