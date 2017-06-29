@@ -20,7 +20,7 @@
               return localforage.setItem(key,angular.copy(taskList));
             };
         return{
-            $get: function(){
+            $get: ['$rootScope',function($rootScope){
                 return {
 
         addTask: function(task){
@@ -87,7 +87,7 @@
 
 
                 };
-            },
+            }],
         };
 
     };
