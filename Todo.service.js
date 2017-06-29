@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 /**
  * Created by user on 6/28/2017.
  */
@@ -75,9 +77,6 @@
             syncToLocalStorage().then(function(){
                 $rootScope.$emit(EVENT);
             });
-        },
-        event: function(){
-            $rootScope.$emit(EVENT);
         },
         subscribe: function(scope, callback){
             const unsubscribe = $rootScope.$on(EVENT,callback);

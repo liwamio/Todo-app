@@ -1,3 +1,4 @@
+/* eslint-disable */
 /**
  * Created by user on 6/28/2017.
  */
@@ -14,27 +15,36 @@
              $scope.Filter = 'All';
              $scope.compeleted = 0;
 
-            const manageList = function() {
-                Todo.getTask().then(function(tasks){
-                    $timeout(function(){
-                        $scope.taskList = tasks.filter(function (task) {
-                            switch ($scope.Filter) {
-                                case 'All':
-                                    return true;
-                                case 'Done':
-                                    return task.done;
-                                case 'Undone':
-                                    return !task.done;
-                                default:
-                                    return true;
-                            }
-                        });
-                    });
-                    Todo.event();
-                })
-            }
+            const compute = function() {
+                Todo.getTask().then(function(tasks) {
+                  $timeout(function(){
 
-           manageList();
+                    $scope.compeleted = tasks.filter(function (task) {
+                        return task.done;
+                    }).length;
+
+                    $scope.taskListLength = tasks.length;
+
+                    $scope.taskList = tasks.filter(function (task) {
+                        switch ($scope.Filter) {
+                            case 'All':
+                                return true;
+
+                            case 'Done':
+                                return task.done;
+
+                            case 'Undone':
+                                return !task.done;
+
+                            default:
+                                return true;
+                        }
+                    });
+                  });
+                });
+            };
+
+           compute();
 
             $scope.add = function(){
                 $scope.taskList = Todo.addTask($scope.task);
@@ -50,19 +60,12 @@
              },
 
             $scope.setFilter = function(filter){
-                $scope.Filter  = filter;
-                manageList();
+                $scope.Filter = filter;
+                compute();
             },
+
             Todo.subscribe($scope,function() {
-                Todo.getTask().then(function (tasks) {
-                  $timeout(function(){
-                    $scope.compeleted = tasks.filter(function (task) {
-                        return task.done;
-                    }).length;
-                    $scope.taskListLength = tasks.length;
-                    manageList();
-                });
-                });
+              compute();
             });
         };
 })(window.angular);
