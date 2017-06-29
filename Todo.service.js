@@ -35,7 +35,16 @@
               return angular.copy(taskList);
         },
         getTask: function(){
-            return angular.copy(taskList);
+            return new Promise(function(resolve,reject){
+                localforage.getItem(key).then(function(value){
+                    taskList = value === null ? [] : value;
+                    resolve(angular.copy(taskList));
+                },
+                function(){
+                    taskList = [];
+                    resolve(angular.copy(taskList));
+                });
+            });
         },
 
         removeTask: function(taskId){
