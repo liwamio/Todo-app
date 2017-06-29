@@ -6,6 +6,13 @@
     angular.module("TodoService")
         .provider("Todo",Todo);
          function Todo(){
+
+             localforage.config({
+                 name: 'LIWAM',
+                 storeName: 'LIWAM',
+                 description: 'LIWAM',
+             });
+
             let taskList = [];
         return{
             $get: function(){
