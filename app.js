@@ -40,12 +40,10 @@
 
             $scope.remove = function (taskId) {
                 Todo.removeTask(taskId);
-                manageList();
             },
 
             $scope.toggle = function (taskId){
                 Todo.updateWhenToogled(taskId);
-            },
 
             $scope.setFilter = function(filter){
                 $scope.Filter  = filter;
