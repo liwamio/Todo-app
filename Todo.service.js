@@ -14,6 +14,11 @@
              });
 
             let taskList = [];
+            const key = "ToDoTasks";
+            const EVENT = 'CHANGE';
+            const syncToLocalStorage = function(){
+              return localforage.setItem(key,angular.copy(taskList));
+            };
         return{
             $get: function(){
                 return {
