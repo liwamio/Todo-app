@@ -1,3 +1,4 @@
 .idea
 angular.min.js
 localforage.min.js
+angular-route.min.js
