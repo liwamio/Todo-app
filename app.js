@@ -20,6 +20,8 @@
              $scope.taskList = [];
              $scope.taskListLength = 0;
              $scope.task = '';
+             $scope.show = true;
+             $scope.routeVaraible = {vari:$routeParams.value}
              $scope.Filter = 'All';
              $scope.compeleted = 0;
 
