@@ -25,7 +25,11 @@
              $scope.Filter = 'All';
              $scope.compeleted = 0;
 
-            const compute = function() {
+             $rootScope.$on('$routeChangeSuccess',function(){
+                 $scope.show = false;
+             })
+
+            const compute = function(filter) {
                 Todo.getTask().then(function(tasks) {
                   $timeout(function(){
 
