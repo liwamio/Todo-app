@@ -31,13 +31,10 @@
             const compute = function(filter) {
                 Todo.getTask().then(function(tasks) {
                   $timeout(function(){
-
                     $scope.compeleted = tasks.filter(function (task) {
                         return task.done;
                     }).length;
-
                     $scope.taskListLength = tasks.length;
-
                     $scope.taskList = tasks.filter(function (task) {
                         switch (filter) {
                             case 'All':
