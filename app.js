@@ -3,8 +3,7 @@
  * Created by user on 6/28/2017.
  */
 (function(angular){
-    'use strict'
-    angular.module('Liwam',['TodoService']);
+    angular.module('Liwam',['TodoService','ngRoute']);
     angular.module('Liwam')
         .config(function($routeProvider){
             $routeProvider
