@@ -39,7 +39,7 @@
                     $scope.taskListLength = tasks.length;
 
                     $scope.taskList = tasks.filter(function (task) {
-                        switch ($scope.Filter) {
+                        switch (filter) {
                             case 'All':
                                 return true;
 
