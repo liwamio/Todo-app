@@ -15,8 +15,8 @@
                 })
         })
         .controller('liwamController',liwamController);
-    liwamController.$inject = ['$scope','Todo','$timeout'];
-    function liwamController ($scope,Todo,$timeout){
+    liwamController.$inject = ['$scope','Todo','$timeout','$routeParams','$rootScope'];
+    function liwamController ($scope,Todo,$timeout,$routeParams,$rootScope){
              $scope.taskList = [];
              $scope.taskListLength = 0;
              $scope.task = '';
