@@ -6,6 +6,14 @@
     'use strict'
     angular.module('Liwam',['TodoService']);
     angular.module('Liwam')
+        .config(function($routeProvider){
+            $routeProvider
+                .when('/:value',{
+                    templateUrl: "done.html",
+                    controller: "liwamController",
+
+                })
+        })
         .controller('liwamController',liwamController);
     liwamController.$inject = ['$scope','Todo','$timeout'];
     function liwamController ($scope,Todo,$timeout){
