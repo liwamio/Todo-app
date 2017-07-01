@@ -12,18 +12,22 @@
             <button type="submit">Add +</button>
             <span ng-bind="compeleted"></span>/<span ng-bind="taskListLength"></span>
         </form>
-         <form>
-            <button ng-click="setFilter('All')">All</button>
-            <button ng-click="setFilter('Done')">Done</button>
-            <button ng-click="setFilter('Undone')">Undone</button>
-         </form>
-        <ul>
-            <li ng-repeat = "task in taskList track by $index">
-                <input type = "checkbox" ng-click="toggle(task.id)" ng-model="task.done">
-                <span ng-bind="task.task"></span>
-                <button ng-click="remove(task.id)">Remove X</button>
-            </li>
-        </ul>
+          <ng-view></ng-view>
+         <div ng-show="show===true">
+            <form >
+                <button ng-click="setFilter('All')">All</button>
+                <button ng-click="setFilter('Done')">Done</button>
+                <button ng-click="setFilter('Undone')">Undone</button>
+            </form>
+
+            <ul>
+                <li ng-repeat = "task in taskList track by $index">
+                    <input type = "checkbox" ng-click="toggle(task.id)" ng-model="task.done">
+                    <span ng-bind="task.task"></span>
+                    <button ng-click="remove(task.id)">Remove X</button>
+                </li>
+            </ul>
+         </div>
       </div>
 
   <script type="text/javascript" src="localforage.min.js"></script>
