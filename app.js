@@ -58,7 +58,7 @@
                 });
             };
 
-           compute();
+           compute($scope.Filter);
 
             $scope.add = function(){
                 $scope.taskList = Todo.addTask($scope.task);
@@ -75,11 +75,11 @@
 
             $scope.setFilter = function(filter){
                 $scope.Filter = filter;
-                compute();
+                compute(filter);
             },
 
             Todo.subscribe($scope,function() {
-              compute();
+              compute($scope.Filter);
             });
         };
 })(window.angular);
