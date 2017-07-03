@@ -59,20 +59,20 @@
             $scope.add = function(){
                 $scope.taskList = Todo.addTask($scope.task);
                 $scope.task = '';
-            },
+            };
 
             $scope.remove = function (taskId) {
                 Todo.removeTask(taskId);
-            },
+            };
 
             $scope.toggle = function (taskId){
                 Todo.updateWhenToogled(taskId);
-             },
+            };
 
             $scope.setFilter = function(filter){
                 $scope.Filter = filter;
                 compute(filter);
-            },
+            };
 
             Todo.subscribe($scope,function() {
               compute($scope.Filter);
