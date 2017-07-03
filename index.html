@@ -1,39 +1,30 @@
 <!DOCTYPE html>
+
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <title>To do App</title>
-</head>
-<body ng-app="Liwam">
+  </head>
 
-      <div ng-controller="liwamController">
-        <form ng-submit="add()">
-            <input type="text" placeholder="To do" ng-model="task">
-            <button type="submit">Add +</button>
-            <span ng-bind="compeleted"></span>/<span ng-bind="taskListLength"></span>
-        </form>
-          <ng-view></ng-view>
-         <div ng-show="show===true">
-            <form >
-                <button ng-click="setFilter('All')">All</button>
-                <button ng-click="setFilter('Done')">Done</button>
-                <button ng-click="setFilter('Undone')">Undone</button>
-            </form>
+  <body ng-app="Liwam">
+    <form ng-submit="add()">
+      <input type="text" placeholder="To do" ng-model="task">
+      <button type="submit">Add +</button>
+      <span ng-bind="compeleted"></span>/<span ng-bind="taskListLength"></span>
+    </form>
 
-            <ul>
-                <li ng-repeat = "task in taskList track by $index">
-                    <input type = "checkbox" ng-click="toggle(task.id)" ng-model="task.done">
-                    <span ng-bind="task.task"></span>
-                    <button ng-click="remove(task.id)">Remove X</button>
-                </li>
-            </ul>
-         </div>
-      </div>
+    <div>
+      <a href="#/All">All</a>
+      <a href="#/Done">Done</a>
+      <a href="#/Undone">Undone</a>
+    </div>
 
-  <script type="text/javascript" src="angular.min.js"></script>
-  <script type="text/javascript" src="localforage.min.js"></script>
-  <script type="text/javascript" src="angular-route.min.js"></script>
-  <script type="text/javascript" src="app.js"></script>
-  <script type="text/javascript" src="Todo.service.js"></script>
-</body>
+    <ng-view></ng-view>
+
+    <script type="text/javascript" src="angular.min.js"></script>
+    <script type="text/javascript" src="localforage.min.js"></script>
+    <script type="text/javascript" src="angular-route.min.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+    <script type="text/javascript" src="Todo.service.js"></script>
+  </body>
 </html>
