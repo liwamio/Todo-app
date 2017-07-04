@@ -3,22 +3,43 @@
  * Created by user on 6/28/2017.
  */
 (function(angular){
-    angular.module('Liwam',['TodoService','ngRoute']);
+    angular.module('Liwam',['TodoService','ngRoute','AuthenticateService']);
     angular.module('Liwam')
         .config(function($routeProvider){
           $routeProvider
             .when('/:filter?', {
                 templateUrl: 'view/filter.html',
+                resolve: {'isLoggedIn': function(Authenticate,$window) {
+                    localforage.getItem('AuthenticationKey')
+                         .then(function(value){
+                             if (value=== true) {
+                             }else {
+                                alert("you haven't logged in.");
+                                $window.location.href = 'index.html'
+                            }
+                    })
+                }
+                },
             })
             .otherwise({
               templateUrl: 'view/not-found.html',
+              resolve: {'isLoggedIn': function(Authenticate,$window){
+                localforage.getItem('AuthenticationKey')
+                    .then(function(value){
+                        if(value === true){
+                        }else{
+                            alert("you haven't logged in.");
+                            $window.location.href = 'index.html';
+                        }
+                    })
+              }},
             })
         })
         .run(Run);
 
-        Run.$inject = ['$rootScope', '$routeParams', '$timeout', 'Todo'];
+        Run.$inject = ['$rootScope','$timeout','Todo','Authenticate'];
 
-        function Run($rootScope, $routeParams, $timeout, Todo) {
+        function Run($rootScope, $timeout, Todo, Authenticate) {
           $rootScope.task = '';
           $rootScope.taskList = [];
           $rootScope.taskListLength = 0;
@@ -58,11 +79,12 @@
           };
 
           $rootScope.$on('$routeChangeSuccess',function(event, toRoute) {
-            if (Object.prototype.hasOwnProperty.call(toRoute.params, 'filter')) {
-              compute(toRoute.params.filter);
-            } else {
-              compute('All');
-            }
+                if (Object.prototype.hasOwnProperty.call(toRoute.params, 'filter')) {
+                    compute(toRoute.params.filter);
+                } else {
+                    compute('All');
+                }
+
           });
 
           $rootScope.remove = function (taskId) {
@@ -77,6 +99,10 @@
             $rootScope.filter = filter;
             compute(filter);
           };
+
+          $rootScope.logOut = function(){
+              Authenticate.logOut();
+          }
 
           Todo.subscribe($rootScope, function() {
             compute($rootScope.filter);
