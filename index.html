@@ -1,22 +1,19 @@
 <!DOCTYPE html>
-
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <title>To do App</title>
-  </head>
+    <head>
+        <meta charset="UTF-8">
+        <title>Log in</title>
+    </head>
+  <body ng-app="Authentication">
 
-  <body ng-app="Liwam">
-    <form ng-submit="add()">
-      <input type="text" placeholder="To do" ng-model="task">
-      <button type="submit">Add +</button>
-      <span ng-bind="compeleted"></span>/<span ng-bind="taskListLength"></span>
+    <div ng-controller="AuthenticationController">
+    <form ng-submit=signIn()>
+        <label> User Name </label><input type="text" ng-model="userName" placeholder="Type in user name">
+        <br><br>
+        <label> Password  </label><input type="text" ng-model="password" placeholder="Type in password">
+        <br><br>
+        <button type="submit">Sign In</button>
     </form>
-
-    <div>
-      <a href="#/All">All</a>
-      <a href="#/Done">Done</a>
-      <a href="#/Undone">Undone</a>
     </div>
 
     <ng-view></ng-view>
@@ -24,7 +21,9 @@
     <script type="text/javascript" src="angular.min.js"></script>
     <script type="text/javascript" src="localforage.min.js"></script>
     <script type="text/javascript" src="angular-route.min.js"></script>
-    <script type="text/javascript" src="app.js"></script>
-    <script type="text/javascript" src="Todo.service.js"></script>
+    <script type="text/javascript" src="Authentication.js"></script>
+    <script type="text/javascript" src="Authenticate-service.js"></script>
+
+
   </body>
 </html>
