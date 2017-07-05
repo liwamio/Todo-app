@@ -4,8 +4,8 @@
 (function(angular){
     angular.module('AuthenticateService',[]);
     angular.module('AuthenticateService')
-        .provider('Authenticate',Authenticate);
-    function Authenticate(){
+        .provider('Authenticate',AuthenticateProvider);
+    function AuthenticateProvider(){
 
         localforage.config({
             name: 'LIWAM',
@@ -16,24 +16,35 @@
         let userStatus = false;
         const key = 'AuthenticationKey';
         return{
-            $get: function($window){
+            $get: ['$rootScope', '$location',function($rootScope, $location){
                 return{
         logIn: function(username, password){
             if(username === 'user' && password === '1234'){
                 userStatus = true;
-                localforage.setItem(key, userStatus);
-                $window.location.href = "home.html";
+                localforage.setItem(key, userStatus).then(function(){
+                    $location.path('/').repalce();
+                    $rootScope.$apply();
+                })
             }else {
                 alert("wrong user name or password!");
             }
         },
         logOut: function(){
             userStatus = false;
-            localforage.setItem(key, userStatus);
-            $window.location.href = "index.html";
+            localforage.setItem(key, userStatus).then(function(){
+                $location.path('/login').replace();
+                $rootScope.$apply();
+            })
         },
+        getStatus: function(){
+            return new Promise (function (resolve, reject){
+                localforage.getItem(key).then(function(value){
+                    resolve(value);
+                })
+            })
+        }
                 };
-            },
+            }],
         };
 
     };

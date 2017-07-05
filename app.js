@@ -9,42 +9,28 @@
           $routeProvider
             .when('/:filter?', {
                 templateUrl: 'view/filter.html',
-                resolve: {'isLoggedIn': function(Authenticate,$window) {
-                    localforage.getItem('AuthenticationKey')
-                         .then(function(value){
-                             if (value=== true) {
-                             }else {
-                                alert("you haven't logged in.");
-                                $window.location.href = 'index.html'
-                            }
-                    })
-                }
-                },
             })
             .otherwise({
               templateUrl: 'view/not-found.html',
-              resolve: {'isLoggedIn': function(Authenticate,$window){
-                localforage.getItem('AuthenticationKey')
-                    .then(function(value){
-                        if(value === true){
-                        }else{
-                            alert("you haven't logged in.");
-                            $window.location.href = 'index.html';
-                        }
-                    })
-              }},
             })
         })
         .run(Run);
 
-        Run.$inject = ['$rootScope','$timeout','Todo','Authenticate'];
+        Run.$inject = ['$rootScope','$timeout','Todo','Authenticate','$location'];
 
-        function Run($rootScope, $timeout, Todo, Authenticate) {
+        function Run($rootScope, $timeout, Todo, Authenticate, $location) {
           $rootScope.task = '';
           $rootScope.taskList = [];
           $rootScope.taskListLength = 0;
           $rootScope.compeleted = 0;
           $rootScope.filter = 'All';
+          $rootScope.loggedIn = false;
+          Authenticate.getStatus().then(function(value){
+              $timeout(function(){
+                  $rootScope.loggedIn = value;
+              })
+          })
+
 
           $rootScope.add = function(){
             $rootScope.taskList = Todo.addTask($rootScope.task);
@@ -80,7 +66,13 @@
 
           $rootScope.$on('$routeChangeSuccess',function(event, toRoute) {
                 if (Object.prototype.hasOwnProperty.call(toRoute.params, 'filter')) {
-                    compute(toRoute.params.filter);
+                    if($rootScope.loggedIn===false){
+                        $location.path('/login').replace();
+                        $rootScope.$apply();
+                    }
+                    else {
+                        compute(toRoute.params.filter);
+                    }
                 } else {
                     compute('All');
                 }
@@ -101,8 +93,12 @@
           };
 
           $rootScope.logOut = function(){
-              Authenticate.logOut();
+             $rootScope.loggedIn = Authenticate.logOut();
           }
+          $rootScope.logIn = function(){
+              $rootScope.loggedIn = Authenticate.logIn($rootScope.userName, $rootScope.password);
+          }
+
 
           Todo.subscribe($rootScope, function() {
             compute($rootScope.filter);
