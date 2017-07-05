@@ -22,12 +22,13 @@
             if(username === 'user' && password === '1234'){
                 userStatus = true;
                 localforage.setItem(key, userStatus).then(function(){
-                    $location.path('/').repalce();
+                    $location.path('/').replace();
                     $rootScope.$apply();
                 })
             }else {
                 alert("wrong user name or password!");
             }
+            return userStatus;
         },
         logOut: function(){
             userStatus = false;
@@ -35,6 +36,7 @@
                 $location.path('/login').replace();
                 $rootScope.$apply();
             })
+            return userStatus;
         },
         getStatus: function(){
             return new Promise (function (resolve, reject){

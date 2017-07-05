@@ -7,8 +7,14 @@
     angular.module('Liwam')
         .config(function($routeProvider){
           $routeProvider
-            .when('/:filter?', {
-                templateUrl: 'view/filter.html',
+            .when('/login',{
+              templateUrl: 'view/login.html',
+            })
+            .when('/',{
+               templateUrl: 'view/home.html'
+            })
+            .when('/:filter', {
+              templateUrl: 'view/filter.html',
             })
             .otherwise({
               templateUrl: 'view/not-found.html',
@@ -30,7 +36,6 @@
                   $rootScope.loggedIn = value;
               })
           })
-
 
           $rootScope.add = function(){
             $rootScope.taskList = Todo.addTask($rootScope.task);
@@ -66,17 +71,10 @@
 
           $rootScope.$on('$routeChangeSuccess',function(event, toRoute) {
                 if (Object.prototype.hasOwnProperty.call(toRoute.params, 'filter')) {
-                    if($rootScope.loggedIn===false){
-                        $location.path('/login').replace();
-                        $rootScope.$apply();
-                    }
-                    else {
                         compute(toRoute.params.filter);
-                    }
                 } else {
                     compute('All');
                 }
-
           });
 
           $rootScope.remove = function (taskId) {
