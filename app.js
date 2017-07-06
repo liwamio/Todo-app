@@ -8,42 +8,79 @@
         .config(function($routeProvider){
           $routeProvider
             .when('/login',{
-              templateUrl: 'view/login.html',
+                templateUrl: 'view/login.html',
+                controller: logController,
+                resolve:{'isLoggedOut': ['Authenticate',function(AuthenticateProvider){
+                    AuthenticateProvider.setPath('login');
+                    AuthenticateProvider.setKey('AuthenticationKey');
+                    return AuthenticateProvider.getStatus();
+                }]}
             })
             .when('/',{
-               templateUrl: 'view/home.html'
+                templateUrl: 'view/home.html',
+                controller: homeController,
+                resolve:{'isLoggedIn': ['Authenticate',function(AuthenticateProvider){
+                    AuthenticateProvider.setPath('login');
+                    AuthenticateProvider.setKey('AuthenticationKey');
+                    return AuthenticateProvider.getStatus();
+                }]}
             })
             .when('/:filter', {
-              templateUrl: 'view/filter.html',
+                templateUrl: 'view/home.html',
+                controller: homeController,
+                resolve:{'isLoggedIn': ['Authenticate',function(AuthenticateProvider){
+                    AuthenticateProvider.setPath('login');
+                    AuthenticateProvider.setKey('AuthenticationKey');
+                    return AuthenticateProvider.getStatus();
+                }]}
             })
             .otherwise({
-              templateUrl: 'view/not-found.html',
+                templateUrl: 'view/not-found.html',
             })
         })
+        .controller('logController',logController)
+        .controller('homeController',homeController)
         .run(Run);
 
-        Run.$inject = ['$rootScope','$timeout','Todo','Authenticate','$location'];
+       logController.$inject = ['$location','Authenticate','isLoggedOut'];
+          function logController($location,Authenticate,isLoggedOut){
+            if(isLoggedOut === true){
+                $location.path('/home').replace();
+            }
+            else {
+                $location.path('/'+Authenticate.getPath()).replace();
+            }
+          };
 
-        function Run($rootScope, $timeout, Todo, Authenticate, $location) {
+       homeController.$inject = ['$location','Authenticate','isLoggedIn'];
+          function homeController($location,Authenticate,isLoggedIn){
+            if(isLoggedIn === false){
+                $location.path('/'+Authenticate.getPath()).replace();
+            }
+          };
+
+       Run.$inject = ['$rootScope','$timeout','Todo','Authenticate'];
+
+          function Run($rootScope, $timeout, Todo, Authenticate) {
+          localforage.config({
+              name: 'LIWAM',
+              storeName: 'LIWAM',
+              description: 'LIWAM',
+          });
           $rootScope.task = '';
           $rootScope.taskList = [];
           $rootScope.taskListLength = 0;
           $rootScope.compeleted = 0;
           $rootScope.filter = 'All';
-          $rootScope.loggedIn = false;
-          Authenticate.getStatus().then(function(value){
-              $timeout(function(){
-                  $rootScope.loggedIn = value;
-              })
-          })
 
-          $rootScope.add = function(){
-            $rootScope.taskList = Todo.addTask($rootScope.task);
+          $rootScope.add = function(task){
+            $rootScope.taskList = Todo.addTask(task);
             $rootScope.task = '';
           };
 
+
           const compute = function(filter) {
-              Todo.getTask().then(function(tasks) {
+            Todo.getTask().then(function(tasks) {
                 $timeout(function(){
                   $rootScope.compeleted = tasks.filter(function (task) {
                     return task.done;
@@ -66,16 +103,22 @@
                     }
                   });
                 });
-              });
+            });
           };
 
           $rootScope.$on('$routeChangeSuccess',function(event, toRoute) {
-                if (Object.prototype.hasOwnProperty.call(toRoute.params, 'filter')) {
-                        compute(toRoute.params.filter);
-                } else {
-                    compute('All');
-                }
+            if (Object.prototype.hasOwnProperty.call(toRoute.params, 'filter')) {
+                compute(toRoute.params.filter);
+            }
+            else{
+                compute('All');
+            }
           });
+
+          $rootScope.add = function(task){
+            $rootScope.taskList = Todo.addTask(task);
+            $rootScope.task = '';
+          };
 
           $rootScope.remove = function (taskId) {
             Todo.removeTask(taskId);
@@ -91,12 +134,12 @@
           };
 
           $rootScope.logOut = function(){
-             $rootScope.loggedIn = Authenticate.logOut();
-          }
-          $rootScope.logIn = function(){
-              $rootScope.loggedIn = Authenticate.logIn($rootScope.userName, $rootScope.password);
+             Authenticate.logOut();
           }
 
+          $rootScope.logIn = function(userName,password){
+             Authenticate.logIn(userName, password);
+          }
 
           Todo.subscribe($rootScope, function() {
             compute($rootScope.filter);

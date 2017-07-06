@@ -1,25 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-     <meta charset="UTF-8">
-     <title>Title</title>
-  </head>
-    <body>
+<form ng-submit="add(task)">
+    <input type="text" placeholder="To do" ng-model="task">
+    <button type="submit">Add +</button>
+    <span ng-bind="compeleted"></span>/<span ng-bind="taskListLength"></span>
+</form>
 
-        <form ng-submit="add()">
-            <input type="text" placeholder="To do" ng-model="task">
-            <button type="submit">Add +</button>
-            <span ng-bind="compeleted"></span>/<span ng-bind="taskListLength"></span>
-        </form>
+<div>
+    <a href="#/All">All</a>
+    <a href="#/Done">Done</a>
+    <a href="#/Undone">Undone</a>
+</div>
+<ul>
+    <li ng-repeat = "task in taskList track by $index">
+    <input type = "checkbox" ng-click="toggle(task.id)" ng-model="task.done">
+    <span ng-bind="task.task"></span>
+    <button ng-click="remove(task.id)">Remove X</button>
+    </li>
+</ul>
 
-        <div>
-            <a href="#/All">All</a>
-            <a href="#/Done">Done</a>
-            <a href="#/Undone">Undone</a>
-        </div>
-        <ng-view></ng-view>
-
-        <button ng-click="logOut()"> Log Out</button>
-
-    </body>
-</html>
+<button ng-click="logOut()"> Log Out</button>

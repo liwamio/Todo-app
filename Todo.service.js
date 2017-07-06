@@ -8,13 +8,6 @@
     angular.module("TodoService")
         .provider("Todo",Todo);
          function Todo(){
-
-             localforage.config({
-                 name: 'LIWAM',
-                 storeName: 'LIWAM',
-                 description: 'LIWAM',
-             });
-
             let taskList = [];
             const key = "ToDoTasks";
             const EVENT = 'CHANGE';

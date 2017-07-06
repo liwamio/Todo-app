@@ -4,20 +4,16 @@
 (function(angular){
     angular.module('AuthenticateService',[]);
     angular.module('AuthenticateService')
-        .provider('Authenticate',AuthenticateProvider);
-    function AuthenticateProvider(){
-
-        localforage.config({
-            name: 'LIWAM',
-            storeName: 'LIWAM',
-            description: 'LIWAM',
-        });
-
+        .provider('Authenticate',Authenticate);
+    function Authenticate(){
         let userStatus = false;
-        const key = 'AuthenticationKey';
+        let Path = 'login'
+        let key = 'AuthenticationKey';
+
         return{
-            $get: ['$rootScope', '$location',function($rootScope, $location){
+            $get:function($http,$q,$rootScope, $location){
                 return{
+
         logIn: function(username, password){
             if(username === 'user' && password === '1234'){
                 userStatus = true;
@@ -28,25 +24,38 @@
             }else {
                 alert("wrong user name or password!");
             }
-            return userStatus;
         },
+
         logOut: function(){
             userStatus = false;
-            localforage.setItem(key, userStatus).then(function(){
-                $location.path('/login').replace();
-                $rootScope.$apply();
-            })
-            return userStatus;
-        },
-        getStatus: function(){
-            return new Promise (function (resolve, reject){
-                localforage.getItem(key).then(function(value){
-                    resolve(value);
+                localforage.setItem(key, userStatus).then(function(){
+                    $location.path('/login').replace();
+                    $rootScope.$apply();
                 })
-            })
-        }
+        },
+
+        getStatus: function(){
+            let deffered = $q.defer();
+                localforage.getItem(key).then(function(value){
+                    userStatus = value;
+                    deffered.resolve(userStatus)
+                });
+            return deffered.promise;
+        },
+
+        setPath: function(path){
+            Path = path;
+        },
+
+        getPath: function(){
+            return Path;
+        },
+
+        setKey: function(keys){
+            key = keys;
+        },
                 };
-            }],
+            },
         };
 
     };

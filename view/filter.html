@@ -1,7 +1,0 @@
-<ul>
-  <li ng-repeat = "task in taskList track by $index">
-    <input type = "checkbox" ng-click="toggle(task.id)" ng-model="task.done">
-    <span ng-bind="task.task"></span>
-    <button ng-click="remove(task.id)">Remove X</button>
-  </li>
-</ul>
