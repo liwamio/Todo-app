@@ -5,58 +5,45 @@
 (function(angular){
     angular.module('Liwam',['TodoService','ngRoute','AuthenticateService']);
     angular.module('Liwam')
-        .config(function($routeProvider){
+        .config(function($routeProvider, AuthenticateProvider){
+          AuthenticateProvider.setPath('login');
+          AuthenticateProvider.setKey('AuthenticationKey');
+
           $routeProvider
             .when('/login',{
                 templateUrl: 'view/login.html',
                 controller: logController,
-                resolve:{'isLoggedOut': ['Authenticate',function(AuthenticateProvider){
-                    AuthenticateProvider.setPath('login');
-                    AuthenticateProvider.setKey('AuthenticationKey');
-                    return AuthenticateProvider.getStatus();
-                }]}
             })
             .when('/',{
                 templateUrl: 'view/home.html',
-                controller: homeController,
-                resolve:{'isLoggedIn': ['Authenticate',function(AuthenticateProvider){
-                    AuthenticateProvider.setPath('login');
-                    AuthenticateProvider.setKey('AuthenticationKey');
-                    return AuthenticateProvider.getStatus();
-                }]}
+                resolve: {
+                  isLoggedIn: AuthenticateProvider.getStatus,
+                },
             })
             .when('/:filter', {
                 templateUrl: 'view/home.html',
-                controller: homeController,
-                resolve:{'isLoggedIn': ['Authenticate',function(AuthenticateProvider){
-                    AuthenticateProvider.setPath('login');
-                    AuthenticateProvider.setKey('AuthenticationKey');
-                    return AuthenticateProvider.getStatus();
-                }]}
+                resolve: {
+                  isLoggedIn: AuthenticateProvider.getStatus,
+                },
             })
             .otherwise({
                 templateUrl: 'view/not-found.html',
             })
         })
         .controller('logController',logController)
-        .controller('homeController',homeController)
         .run(Run);
 
-       logController.$inject = ['$location','Authenticate','isLoggedOut'];
-          function logController($location,Authenticate,isLoggedOut){
-            if(isLoggedOut === true){
-                $location.path('/home').replace();
-            }
-            else {
-                $location.path('/'+Authenticate.getPath()).replace();
-            }
-          };
-
-       homeController.$inject = ['$location','Authenticate','isLoggedIn'];
-          function homeController($location,Authenticate,isLoggedIn){
-            if(isLoggedIn === false){
-                $location.path('/'+Authenticate.getPath()).replace();
-            }
+       logController.$inject = ['$location','Authenticate'];
+          function logController($location,Authenticate){
+            Authenticate
+              .isLoggedIn()
+              .then(function(user) {
+                if (user === true) {
+                  $location.path('/home').replace();
+                } else {
+                  $location.path(Authenticate.getPath()).replace();
+                }
+              });
           };
 
        Run.$inject = ['$rootScope','$timeout','Todo','Authenticate'];
@@ -115,8 +102,8 @@
             }
           });
 
-          $rootScope.add = function(task){
-            $rootScope.taskList = Todo.addTask(task);
+          $rootScope.add = function(){
+            $rootScope.taskList = Todo.addTask($rootScope.task);
             $rootScope.task = '';
           };
 
