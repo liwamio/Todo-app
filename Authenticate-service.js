@@ -1,3 +1,4 @@
+/* eslint-disable */
 /**
  * Created by user on 7/3/2017.
  */
@@ -11,6 +12,30 @@
         let key = 'AuthenticationKey';
 
         return{
+            setKey: function(keys){
+                key = keys;
+            },
+
+            setPath: function(path){
+                Path = path;
+            },
+
+            getStatus: ['$q', '$location', function($q, $location) {
+                return $q(function(resolve, reject) {
+                    localforage.getItem(key).then(function(value){
+                        userStatus = value === null ? false : value;
+
+                        if (value === null || value === false) {
+                            reject();
+                            console.log(Path);
+                            $location.path(Path).replace();
+                        } else {
+                            resolve();
+                        }
+                    });
+                });
+            }],
+
             $get:function($http,$q,$rootScope, $location){
                 return{
 
@@ -34,25 +59,12 @@
                 })
         },
 
-        getStatus: function(){
-            let deffered = $q.defer();
-                localforage.getItem(key).then(function(value){
-                    userStatus = value;
-                    deffered.resolve(userStatus)
-                });
-            return deffered.promise;
-        },
-
-        setPath: function(path){
-            Path = path;
-        },
-
         getPath: function(){
             return Path;
         },
 
-        setKey: function(keys){
-            key = keys;
+        isLoggedIn: function() {
+            return localforage.getItem(key);
         },
                 };
             },
