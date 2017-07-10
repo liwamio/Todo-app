@@ -9,22 +9,23 @@
             $routeProvider
                 .when('/login', {
                     templateUrl: 'app/view/login.html',
-                    controller: 'loginController',
+                    controller: 'pathController',
                 })
                 .when('/', {
                     templateUrl: 'app/view/home.html',
                     resolve: {
                         isLoggedIn: AuthenticateProvider.getStatus,
                     },
+                    controller: 'pathController',
                 })
-                .when('/:filter', {
+                .when('/:filter?', {
                     templateUrl: 'app/view/home.html',
                     resolve: {
                         isLoggedIn: AuthenticateProvider.getStatus,
                     },
                 })
                 .otherwise({
-                    templateUrl: 'app//view/not-found.html',
+                    templateUrl: 'app/view/not-found.html',
                 })
         })
 })(window.angular);
