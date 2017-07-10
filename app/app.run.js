@@ -2,9 +2,7 @@
     /**
      * Created by user on 7/10/2017.
      */
-    angular.module('appRun',['ngRoute','AuthenticateService','TodoService']);
-    angular.module('appRun').
-        run(Run);
+    angular.module('Liwam').run(Run);
     Run.$inject = ['$rootScope', '$timeout', '$routeParams', 'Todo', 'Authenticate'];
 
     function Run($rootScope, $timeout, $routeParams, Todo, Authenticate) {
