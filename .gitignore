@@ -2,3 +2,5 @@
 angular.min.js
 localforage.min.js
 angular-route.min.js
+bower_components
+bower.json
