@@ -1,11 +1,11 @@
-<form ng-submit=logIn(userName,password)>
+<form ng-submit="logIn()" class="loginForm">
     <label> User Name </label>
-    <input type="text" ng-model="userName" placeholder="Type in user name">
+    <input type="text" ng-model="$root.userName" placeholder="Type in user name">
     <br><br>
-    <label> Password  </label>
-    <input type="text" ng-model="password" placeholder="Type in password">
+    <label> Password </label>
+    <input type="password" ng-model="$root.password" placeholder="Type in password">
     <br><br>
-    <button type="submit">Log In</button>
+    <input type="submit" value="Log In">
 </form>
 
 

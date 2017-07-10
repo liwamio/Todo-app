@@ -1,20 +1,24 @@
 <form ng-submit="$root.add()">
-    <input type="text" placeholder="To do" ng-model="$root.task">
-    <button type="submit">Add +</button>
+    <input class="todoTextBox" type="text" placeholder="To do" ng-model="$root.task">
+    <button class="addBtn" type="submit">Add +</button>
     <span ng-bind="compeleted"></span>/<span ng-bind="taskListLength"></span>
+
 </form>
 
-<div>
+<div ng-show="taskListLength!=0" class="links">
     <a href="#/All">All</a>
     <a href="#/Done">Done</a>
     <a href="#/Undone">Undone</a>
 </div>
-<ul>
-    <li ng-repeat = "task in taskList track by $index">
-    <input type = "checkbox" ng-click="toggle(task.id)" ng-model="task.done">
-    <span ng-bind="task.task"></span>
-    <button ng-click="$root.remove(task.id)">Remove X</button>
-    </li>
-</ul>
+<div class="taskForm">
+    <ul>
+        <li ng-repeat="task in taskList track by $index">
+            <input type="checkbox" ng-click="$root.toggle(task.id)" ng-model="task.done">
+            <label ng-bind="task.task"></label>
+            <button class="removeBtn" type="button" ng-click="$root.remove(task.id)">X</button>
+        </li>
+    </ul>
 
-<button ng-click="$root.logOut()"> Log Out</button>
+</div>
+<button class="logOutBtn" ng-click="$root.logOut()"> Log Out</button>
+
