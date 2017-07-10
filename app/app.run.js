@@ -3,9 +3,9 @@
      * Created by user on 7/10/2017.
      */
     angular.module('Liwam').run(Run);
-    Run.$inject = ['$rootScope', '$timeout', '$routeParams', 'Todo', 'Authenticate'];
+    Run.$inject = ['$rootScope', '$timeout', '$location', '$routeParams', 'Todo', 'Authenticate'];
 
-    function Run($rootScope, $timeout, $routeParams, Todo, Authenticate) {
+    function Run($rootScope, $timeout, $location, $routeParams, Todo, Authenticate) {
         localforage.config({
             name: 'LIWAM',
             storeName: 'LIWAM',
@@ -28,18 +28,19 @@
 
                     $rootScope.taskListLength = tasks.length;
                     $rootScope.taskList = tasks.filter(function (task) {
-                        switch (filter) {
-                            case 'All':
+
+                        switch ((filter.toUpperCase())) {
+                            case 'ALL':
                                 return true;
 
-                            case 'Done':
+                            case 'DONE':
                                 return task.done;
 
-                            case 'Undone':
+                            case 'UNDONE':
                                 return !task.done;
 
                             default:
-                                return true;
+                                $location.path('/not/found');
                         }
                     });
                 });
@@ -51,7 +52,7 @@
                 compute(toRoute.params.filter);
             }
             else {
-                compute('All');
+                compute('All')
             }
         });
 
