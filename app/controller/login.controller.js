@@ -8,7 +8,7 @@
                     .isLoggedIn()
                     .then(function (user) {
                         if (user === true) {
-                            $location.path('/All').replace();
+                            $location.path('filter/All').replace();
                         }
                         else{
                             $location.path(Authenticate.getPath()).replace();

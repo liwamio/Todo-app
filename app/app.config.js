@@ -18,7 +18,7 @@
                     },
                     controller: 'pathController',
                 })
-                .when('/:filter?', {
+                .when('/filter/:filter', {
                     templateUrl: 'app/view/home.html',
                     resolve: {
                         isLoggedIn: AuthenticateProvider.getStatus,

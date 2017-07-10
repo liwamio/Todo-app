@@ -40,9 +40,9 @@
                                 return !task.done;
 
                             default:
-                                $location.path('/not/found');
+                                $location.path('/filter/All');
                         }
-                    });
+                    })
                 });
             });
         };
