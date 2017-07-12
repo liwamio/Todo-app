@@ -1,0 +1,24 @@
+.btn_small{
+    padding: 0.3em 0.8em;
+}
+.btn_warning{
+    background-color: red;
+}
+.btn_warning:hover{
+    background-color: #B33A3A;
+}
+a,a:link{
+   color: blue;
+}
+a:active{
+    color:red;
+}
+a:hover{
+    color: darkblue;
+}
+a:visited{
+    color:darkred;
+}
+.link{
+   align-self: flex-start;
+}
