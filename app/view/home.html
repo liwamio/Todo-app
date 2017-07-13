@@ -1,36 +1,42 @@
-<div class="my-custom-container">
-    <form class="main" ng-submit="$root.add()">
-        <div class="input-group">
-            <div class=" row col-lg-9 col-sm-12">
-            <span class="input-group-btn">
-                <input class="form-control input" ng-model="$root.task">
-                <span ng-bind="compeleted"></span>/<span ng-bind="taskListLength"></span>
-                <button class="btn btn_add btn-secondary" type="submit">Add +</button>
-            </span>
+<button class="btn btn-warning" ng-click="$root.logOut()" style="margin-top: 10px"> Log Out</button>
+<div class="row" style="margin-top: 1em;">
+    <form ng-submit="$root.add()">
+        <div class="form-group">
+            <div class="input-group col-md-offset-3 col-md-6 col-lg-offset-4 col-lg-4">
+                <input type="text" class="form-control" placeholder="Task goes here" ng-model="$root.task">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button" type="submit">ADD +</button>
+                </span>
             </div>
         </div>
-
     </form>
+</div>
 
-    <div class="link">
-        <div class="link" ng-show="taskListLength!=0">
-            <a href="#/filter/All">All</a><span>|</span>
-            <a href="#/filter/Done">Done</a><span>|</span>
-            <a href="#/filter/Undone">Undone</a>
+<div class="row">
+    <div class="col-md-offset-3 col-md-6 col-lg-offset-4 col-lg-4" style="margin-bottom: 15px;">
+        <div class="btn-group btn-group-justified" role="group" aria-label="Justified button group">
+            <a href="#/filter/All" class="btn btn-default" ng-class="{'active': $root.filter === 'All'}" role="button">All</a>
+            <a href="#/filter/Done" class="btn btn-default" ng-class="{'active': $root.filter === 'Done'}"
+               role="button">Done</a>
+            <a href="#/filter/Undone" class="btn btn-default" ng-class="{'active': $root.filter === 'Undone'}"
+               role="button">Undone</a>
         </div>
-
-        <div>
-            <ul class="list-group">
-                <li class="list-group-item" ng-repeat="task in taskList track by $index">
-                    <label>
-                        <input type="checkbox" ng-click="$root.toggle(task.id)" ng-model="task.done">
-                        <span ng-bind="task.task"></span>
-                    </label>
-                    <button class="btn btn_small" type="button" ng-click="$root.remove(task.id)">X</button>
-                </li>
-            </ul>
-
-        </div>
-        <button class="btn btn_warning" ng-click="$root.logOut()"> Log Out</button>
     </div>
 </div>
+
+
+<ul class="list-group">
+    <li class="list-group-item" ng-repeat="task in taskList track by $index">
+        <label style="font-size: 18px; font-weight: normal">
+            <input style="width:3vw; height:3vh;" type="checkbox" ng-click="$root.toggle(task.id)" ng-model="task.done">
+            <span ng-bind="task.task"></span>
+        </label>
+        <div class="btn-group" role="group" aria-label="Third group" style="margin-left:10px">
+            <button class="btn btn-default" type="button" ng-click="$root.remove(task.id)">X</button>
+        </div>
+
+    </li>
+</ul>
+
+
+
