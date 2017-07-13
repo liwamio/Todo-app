@@ -16,8 +16,6 @@
         $rootScope.taskListLength = 0;
         $rootScope.compeleted = 0;
         $rootScope.filter = 'All';
-        $rootScope.userName = '';
-        $rootScope.password = '';
 
         const compute = function (filter) {
             Todo.getTask().then(function (tasks) {
@@ -78,12 +76,6 @@
             Authenticate.logOut();
         }
 
-        $rootScope.logIn = function () {
-            Authenticate.logIn($rootScope.userName, $rootScope.password);
-            $rootScope.userName = '';
-            $rootScope.password = '';
-
-        }
 
         Todo.subscribe($rootScope, function () {
             compute($routeParams.filter);
