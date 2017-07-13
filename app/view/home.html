@@ -1,26 +1,34 @@
-<form ng-submit="$root.add()">
-    <div>
-    <input  type="text" ng-model="$root.task">
-    <span ng-bind="compeleted"></span>/<span ng-bind="taskListLength"></span>
-    <button class="btn"type="submit">Add +</button>
+<div class="my-custom-container">
+    <form class="main" ng-submit="$root.add()">
+        <div class="input-group">
+            <div class=" row col-lg-9 col-sm-12">
+            <span class="input-group-btn">
+                <input class="form-control input" ng-model="$root.task">
+                <span ng-bind="compeleted"></span>/<span ng-bind="taskListLength"></span>
+                <button class="btn btn_add btn-secondary" type="submit">Add +</button>
+            </span>
+            </div>
+        </div>
+
+    </form>
+
+    <div class="link">
+        <div class="link" ng-show="taskListLength!=0">
+            <a href="#/filter/All">All</a><span>|</span>
+            <a href="#/filter/Done">Done</a><span>|</span>
+            <a href="#/filter/Undone">Undone</a>
+        </div>
+
+        <div>
+            <ul class="list-group">
+                <li class="list-group-item" ng-repeat="task in taskList track by $index">
+                    <input type="checkbox" ng-click="$root.toggle(task.id)" ng-model="task.done">
+                    <label ng-bind="task.task"></label>
+                    <button class="btn btn_small" type="button" ng-click="$root.remove(task.id)">X</button>
+                </li>
+            </ul>
+
+        </div>
+        <button class="btn btn_warning" ng-click="$root.logOut()"> Log Out</button>
     </div>
-
-
-<div class="link"ng-show="taskListLength!=0">
-    <a href="#/filter/All">All</a>
-    <a href="#/filter/Done">Done</a>
-    <a href="#/filter/Undone">Undone</a>
 </div>
-</form>
-<div class="taskForm">
-    <ul>
-        <li ng-repeat="task in taskList track by $index">
-            <input type="checkbox" ng-click="$root.toggle(task.id)" ng-model="task.done">
-            <label ng-bind="task.task"></label>
-            <button class="btn btn_small" type="button" ng-click="$root.remove(task.id)">X</button>
-        </li>
-    </ul>
-
-</div>
-<button class="btn btn_warning" ng-click="$root.logOut()"> Log Out</button>
-
