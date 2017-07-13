@@ -9,13 +9,14 @@
     function AuthenticateProvider() {
         let userStatus = false;
         const authConfig = {
-            path: 'login', // if user is not logged in take to this path
+            pathOnFail: 'login', // if user is not logged in take to this path
+            pathOnSuccess: 'filter/All',
             key: 'AuthenticationKey'
         }
 
         return {
             config: function (option) {
-                angular.extend(authConfig,option);
+                angular.extend(authConfig, option);
             },
             getStatus: ['$q', '$location', function ($q, $location) {
                 return $q(function (resolve, reject) {
@@ -24,7 +25,7 @@
 
                         if (value === null || value === false) {
                             reject();
-                            $location.path(authConfig.path).replace();
+                            $location.path(authConfig.pathOnFail).replace();
                         } else {
                             resolve();
                         }
@@ -36,28 +37,32 @@
                 return {
 
                     logIn: function (username, password) {
-                        if (username === 'user' && password === '1234') {
-                            userStatus = true;
-                            localforage.setItem(authConfig.key, userStatus).then(function () {
-                                $location.path('/').replace();
-                                $rootScope.$apply();
-                            })
-                        } else {
-                            alert("wrong user name or password!");
-                        }
+                        return new Promise(function (resolve, reject) {
+                            if (username === 'user' && password === '1234') {
+                                userStatus = true;
+                                localforage.setItem(authConfig.key, userStatus).then(function () {
+                                    resolve();
+                                })
+                            }
+                            else {
+                                reject('wrong user name or password');
+                            }
+                        })
                     },
 
                     logOut: function () {
                         userStatus = false;
                         localforage.setItem(authConfig.key, userStatus).then(function () {
-                            $location.path(authConfig.path).replace();
+                            $location.path(authConfig.pathOnFail).replace();
                             $rootScope.$apply();
                         })
                     },
 
                     getPath: function () {
-                        return authConfig.path;
-
+                        return authConfig.pathOnFail;
+                    },
+                    getPathSuccess: function(){
+                        return authConfig.pathOnSuccess;
                     },
 
                     isLoggedIn: function () {

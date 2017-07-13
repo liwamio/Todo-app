@@ -5,18 +5,11 @@
 (function (angular) {
     angular.module('Liwam')
         .config(function ($routeProvider, AuthenticateProvider) {
-            AuthenticateProvider.config({path: 'login'});
+            AuthenticateProvider.config({pathOnFail: 'login'});
             $routeProvider
                 .when('/login', {
                     templateUrl: 'app/view/login.html',
-                    controller: 'pathController',
-                })
-                .when('/', {
-                    templateUrl: 'app/view/home.html',
-                    resolve: {
-                        isLoggedIn: AuthenticateProvider.getStatus,
-                    },
-                    controller: 'pathController',
+                    controller: 'loginController',
                 })
                 .when('/filter/:filter', {
                     templateUrl: 'app/view/home.html',
