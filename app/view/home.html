@@ -22,8 +22,10 @@
         <div>
             <ul class="list-group">
                 <li class="list-group-item" ng-repeat="task in taskList track by $index">
-                    <input type="checkbox" ng-click="$root.toggle(task.id)" ng-model="task.done">
-                    <label ng-bind="task.task"></label>
+                    <label>
+                        <input type="checkbox" ng-click="$root.toggle(task.id)" ng-model="task.done">
+                        <span ng-bind="task.task"></span>
+                    </label>
                     <button class="btn btn_small" type="button" ng-click="$root.remove(task.id)">X</button>
                 </li>
             </ul>
