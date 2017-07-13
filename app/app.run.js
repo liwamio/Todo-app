@@ -47,9 +47,11 @@
 
         $rootScope.$on('$routeChangeSuccess', function (event, toRoute) {
             if (Object.prototype.hasOwnProperty.call(toRoute.params, 'filter')) {
+                $rootScope.filter = toRoute.params.filter;
                 compute(toRoute.params.filter);
             }
             else {
+                $rootScope.filter = 'All';
                 compute('All')
             }
         });
@@ -65,11 +67,6 @@
 
         $rootScope.toggle = function (taskId) {
             Todo.updateWhenToogled(taskId);
-        };
-
-        $rootScope.setFilter = function (filter) {
-            $rootScope.filter = filter;
-            compute(filter);
         };
 
         $rootScope.logOut = function () {
