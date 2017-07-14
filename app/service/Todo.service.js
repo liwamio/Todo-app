@@ -25,7 +25,8 @@
                         taskList.push({
                             id: Date.now(),
                             task: task,
-                            done: false
+                            done: false,
+                            edit: false
                         });
                         syncToLocalStorage().then(function () {
                             $rootScope.$emit(EVENT);
@@ -71,6 +72,14 @@
                             $rootScope.$emit(EVENT);
                         });
                     },
+
+                    edit: function (updatedTask, index) {
+                        taskList[index].task = updatedTask;
+                        syncToLocalStorage().then(function () {
+                            $rootScope.$emit(EVENT);
+                        });
+                    },
+
                     subscribe: function (scope, callback) {
                         const unsubscribe = $rootScope.$on(EVENT, callback);
                         scope.$on('$destroy', unsubscribe);

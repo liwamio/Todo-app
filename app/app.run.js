@@ -71,8 +71,21 @@
 
         $rootScope.logOut = function () {
             Authenticate.logOut();
-        }
+        };
 
+        $rootScope.clicked = function (index) {
+            for (let i = 0; i < $rootScope.taskList.length; i++) {
+                if ($rootScope.taskList[i].edit === true) {
+                    $rootScope.taskList[i].edit = false;
+                }
+            }
+            $rootScope.taskList[index].edit = true;
+        };
+
+        $rootScope.updated = function (index) {
+            Todo.edit($rootScope.taskList[index].task, index);
+            $rootScope.taskList[index].edit = false;
+        };
 
         Todo.subscribe($rootScope, function () {
             compute($routeParams.filter);
