@@ -7,9 +7,14 @@
                 <span class="input-group-btn">
                     <button class="btn btn-default" type="button" type="submit">ADD +</button>
                 </span>
+                <div class="input-group-addon" style="font-size:20px; margin-left: 10px; margin-top:30px; "><span
+                        ng-bind="compeleted"></span>/<span
+                        ng-bind="taskListLength"></span></div>
             </div>
+
         </div>
     </form>
+
 </div>
 
 <div class="row">
@@ -24,17 +29,34 @@
     </div>
 </div>
 
-
 <ul class="list-group">
     <li class="list-group-item" ng-repeat="task in taskList track by $index">
-        <label style="font-size: 18px; font-weight: normal">
-            <input style="width:3vw; height:3vh;" type="checkbox" ng-click="$root.toggle(task.id)" ng-model="task.done">
-            <span ng-bind="task.task"></span>
-        </label>
-        <div class="btn-group" role="group" aria-label="Third group" style="margin-left:10px">
-            <button class="btn btn-default" type="button" ng-click="$root.remove(task.id)">X</button>
-        </div>
+        <div ng-show="taskList[$index].edit===false" class="row">
+            <span style="font-size: 18px; font-weight: normal" ng-dblclick="$root.clicked($index)">
+                <input style="width:4vw; height:4vh;" type="checkbox" ng-click="$root.toggle(task.id)"
+                       ng-model="task.done">
+                <span ng-bind="task.task"></span>
+            </span>
 
+            <div class="btn-group" role="group" aria-label="Third group" style="margin-left:10px">
+                <button class="btn btn-default" type="button" ng-click="$root.remove(task.id)"><i
+                        class="glyphicon glyphicon-trash"></i></button>
+            </div>
+        </div>
+        <div ng-show="taskList[$index].edit===true" class="row">
+            <div class="form-horizontal">
+                <div class="input-group col-sm-3" style="margin-left: 10px; ">
+                    <input type="text" class="form-control" ng-model="taskList[$index].task">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="$root.updated($index)"><i
+                                class="glyphicon glyphicon-ok"></i>
+                        </button>
+                        <button type="button" class="btn btn-default" ng-click="taskList[$index].edit=false"><i
+                                class="glyphicon glyphicon-remove"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </li>
 </ul>
 
