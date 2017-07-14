@@ -1,24 +1,21 @@
 <button class="btn btn-warning" ng-click="$root.logOut()" style="margin-top: 10px"> Log Out</button>
-<div class="row" style="margin-top: 1em;">
-    <form ng-submit="$root.add()">
-        <div class="form-group">
-            <div class="input-group col-md-offset-3 col-md-6 col-lg-offset-4 col-lg-4">
-                <input type="text" class="form-control" placeholder="Task goes here" ng-model="$root.task">
-                <span class="input-group-btn">
-                    <button class="btn btn-default" type="button" type="submit">ADD +</button>
-                </span>
-                <div class="input-group-addon" style="font-size:20px; margin-left: 10px; margin-top:30px; "><span
-                        ng-bind="compeleted"></span>/<span
-                        ng-bind="taskListLength"></span></div>
-            </div>
 
+<div style="margin-top: 1em; margin-bottom: 1em;">
+    <form class="form-inline" ng-submit="$root.add()">
+        <div class="input-group col-sm-offset-3 col-sm-8 col-md-offset-3 col-md-6 col-lg-offset-4 col-lg-4">
+            <input type="text" class="form-control" placeholder="Task goes here" ng-model="$root.task">
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="submit">ADD +</button>
+                <div class="form-group" style="font-size: 18px; font-weight: 700; margin-left: 10px">
+                    <span ng-bind="compeleted"></span>/<span ng-bind="taskListLength"></span>
+                </div>
+            </span>
         </div>
     </form>
-
 </div>
 
 <div class="row">
-    <div class="col-md-offset-3 col-md-6 col-lg-offset-4 col-lg-4" style="margin-bottom: 15px;">
+    <div class=" col-sm-offset-3 col-sm-8 col-md-offset-3 col-md-6 col-lg-offset-4 col-lg-4" style="margin-bottom: 15px;">
         <div class="btn-group btn-group-justified" role="group" aria-label="Justified button group">
             <a href="#/filter/All" class="btn btn-default" ng-class="{'active': $root.filter === 'All'}" role="button">All</a>
             <a href="#/filter/Done" class="btn btn-default" ng-class="{'active': $root.filter === 'Done'}"
@@ -29,23 +26,22 @@
     </div>
 </div>
 
-<ul class="list-group">
+<ul class="list-group col-sm-offset-3 col-sm-8 col-md-offset-3 col-md-6 col-lg-offset-4 col-lg-4">
     <li class="list-group-item" ng-repeat="task in taskList track by $index">
-        <div ng-show="taskList[$index].edit===false" class="row">
-            <span style="font-size: 18px; font-weight: normal" ng-dblclick="$root.clicked($index)">
-                <input style="width:4vw; height:4vh;" type="checkbox" ng-click="$root.toggle(task.id)"
+        <div ng-show="taskList[$index].edit===false">
+            <span style="font-size: 18px; font-weight: normal; margin-left:10px" ng-dblclick="$root.clicked($index)">
+                <input style="width:3vw; height:3vh; " type="checkbox" ng-click="$root.toggle(task.id)"
                        ng-model="task.done">
                 <span ng-bind="task.task"></span>
             </span>
-
             <div class="btn-group" role="group" aria-label="Third group" style="margin-left:10px">
                 <button class="btn btn-default" type="button" ng-click="$root.remove(task.id)"><i
                         class="glyphicon glyphicon-trash"></i></button>
             </div>
         </div>
         <div ng-show="taskList[$index].edit===true" class="row">
-            <div class="form-horizontal">
-                <div class="input-group col-sm-3" style="margin-left: 10px; ">
+            <div class="form-horizontal" style="padding: 0 1em;">
+                <div class="input-group col-sm-12">
                     <input type="text" class="form-control" ng-model="taskList[$index].task">
                     <div class="input-group-btn">
                         <button type="button" class="btn btn-default" ng-click="$root.updated($index)"><i
