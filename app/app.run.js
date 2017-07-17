@@ -26,8 +26,9 @@
 
         //Authenticate.addUser('user', '1234');
         angular.element(function () {
-            $rootScope.$emit('CHANGE');
+            Authenticate.boot();
         });
+
         const compute = function (filter) {
             if (filter === undefined) {
                 return [];

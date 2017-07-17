@@ -12,12 +12,13 @@
             pathOnFail: 'login', // if user is not logged in take to this path
             pathOnSuccess: 'filter/All',
             key: 'AuthenticationKey'
-        }
+        };
         let users = [];
-        let currentUser = {};
+
+        let currentUser = {loggedIn: false, userName: '', id: ''};
         const userData = {
             key: 'users'
-        }
+        };
 
         const syncToLocalStorage = function () {
             return localforage.setItem(userData.key, angular.copy(users));
@@ -161,13 +162,35 @@
                                                 $rootScope.$emit(EVENT);
                                             })
                                         })
-
                                     }
                                 }
                             }
                         })
 
                     },
+                    boot: function(){
+                        localforage.getItem(userData.key).then(function(value){
+                            if(value === null){
+
+                                users.push({
+                                    userName:'user',
+                                    password: '1234',
+                                    id: Date.now(),
+                                    loggedIn: false});
+
+                                localforage.setItem(userData.key,users).then(function() {
+                                    localforage.setItem(authConfig.key, currentUser);
+                                    syncToLocalStorage().then(function () {
+                                        $rootScope.$emit(EVENT);
+                                    })
+
+                                })
+                        }
+                            else{
+                                $rootScope.$emit(EVENT);
+                            }
+                        })
+                    }
 
                 };
             },
