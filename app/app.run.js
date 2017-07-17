@@ -34,8 +34,8 @@
                 return [];
             }
 
-            $timeout(function() {
-                Todo.getTask().then(function (tasks) {
+            Todo.getTask().then(function (tasks) {
+                $timeout(function() {
                     $rootScope.compeleted = tasks.filter(function (task) {
                         return task.done;
                     }).length;
@@ -74,7 +74,8 @@
             }
         });
 
-        $rootScope.add = function () {
+        $rootScope.add = function (e) {
+            e.preventDefault();
             $rootScope.taskList = Todo.addTask($rootScope.task);
             $rootScope.task = '';
         };
@@ -112,16 +113,11 @@
         Authenticate.subscribe($rootScope, function () {
             Authenticate.getUsers();
             Authenticate.getLoggedInUser().then(function (value) {
-                setTimeout(function () {
+                $timeout(function () {
                     $rootScope.user = value.userName;
-                })
+                });
             })
         });
-
-        $rootScope.setting = function () {
-            $location.path('AccountSetting');
-
-        };
 
         $rootScope.changePassword = function (oldPass, newPass1, newPass2) {
             if (Authenticate.getPassword($rootScope.user) === oldPass) {
@@ -140,7 +136,9 @@
             alert('password changed successfully!');
             $('.modal-backdrop').remove();
             Authenticate.logOut();
-            $rootScope.oldPassword, $rootScope.newPassword1, $rootScope.newPassword2 = '';
+            $rootScope.oldPassword = '';
+            $rootScope.newPassword1 = '';
+            $rootScope.newPassword2 = '';
         };
 
         $rootScope.changeUsername = function () {
