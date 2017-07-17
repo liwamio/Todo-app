@@ -11,6 +11,9 @@
                     templateUrl: 'app/view/login.html',
                     controller: 'loginController',
                 })
+                .when('/AccountSetting', {
+                    templateUrl: 'app/view/setting.html'
+                })
                 .when('/filter/:filter', {
                     templateUrl: 'app/view/home.html',
                     resolve: {
