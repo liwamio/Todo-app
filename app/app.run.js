@@ -16,7 +16,17 @@
         $rootScope.taskListLength = 0;
         $rootScope.compeleted = 0;
         $rootScope.filter = 'All';
+        $rootScope.user = '';
+        $rootScope.userVaribale = true;
+        $rootScope.oldPassword = '';
+        $rootScope.newPassword1 = '';
+        $rootScope.newPassword2 = '';
 
+        //Authenticate.addUser('user', '1234');
+        angular.element(function () {
+            $rootScope.$emit('CHANGE');
+            console.log('page loading completed');
+        });
         const compute = function (filter) {
             Todo.getTask().then(function (tasks) {
                 $timeout(function () {
@@ -90,5 +100,46 @@
         Todo.subscribe($rootScope, function () {
             compute($routeParams.filter);
         });
+
+        Authenticate.subscribe($rootScope, function () {
+            console.log('something happened')
+            Authenticate.getUsers();
+            Authenticate.getLoggedInUser().then(function (value) {
+                setTimeout(function () {
+                    $rootScope.user = value.userName;
+                })
+            })
+        });
+
+        $rootScope.setting = function () {
+            $location.path('AccountSetting');
+
+        };
+
+        $rootScope.changePassword = function (oldPass, newPass1, newPass2) {
+            if (Authenticate.getPassword($rootScope.user) === oldPass) {
+                if (newPass1 === newPass2) {
+                    Authenticate.changePassword($rootScope.user, newPass1);
+                }
+                else {
+                    alert('passwords don\'t match');
+                    return;
+                }
+            }
+            else {
+                alert('wrong password')
+                return;
+            }
+            alert('password changed successfully!');
+
+            $('.modal-backdrop').remove();
+            Authenticate.logOut();
+            $rootScope.oldPassword, $rootScope.newPassword1, $rootScope.newPassword2 = '';
+        };
+
+        $rootScope.changeUsername = function () {
+            Authenticate.changeUsername($rootScope.user);
+            $rootScope.userVaribale = true;
+        }
     }
 })(window.angular);
