@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 (function (angular) {
     /**
      * Created by user on 7/10/2017.
@@ -25,18 +27,20 @@
         //Authenticate.addUser('user', '1234');
         angular.element(function () {
             $rootScope.$emit('CHANGE');
-            console.log('page loading completed');
         });
         const compute = function (filter) {
-            Todo.getTask().then(function (tasks) {
-                $timeout(function () {
+            if (filter === undefined) {
+                return [];
+            }
+
+            $timeout(function() {
+                Todo.getTask().then(function (tasks) {
                     $rootScope.compeleted = tasks.filter(function (task) {
                         return task.done;
                     }).length;
 
                     $rootScope.taskListLength = tasks.length;
                     $rootScope.taskList = tasks.filter(function (task) {
-
                         switch ((filter.toUpperCase())) {
                             case 'ALL':
                                 $rootScope.filter='All';
@@ -53,15 +57,15 @@
                             default:
                                 $location.path('/filter/All');
                         }
-                    })
+                    });
                 });
             });
         };
 
         $rootScope.$on('$routeChangeSuccess', function (event, toRoute) {
             if (Object.prototype.hasOwnProperty.call(toRoute.params, 'filter')) {
-                $rootScope.filter = toRoute.params.filter;
-                compute(toRoute.params.filter);
+                    $rootScope.filter = toRoute.params.filter;
+                    compute(toRoute.params.filter);
             }
             else {
                 $rootScope.filter = 'All';
@@ -105,7 +109,6 @@
         });
 
         Authenticate.subscribe($rootScope, function () {
-            console.log('something happened')
             Authenticate.getUsers();
             Authenticate.getLoggedInUser().then(function (value) {
                 setTimeout(function () {
