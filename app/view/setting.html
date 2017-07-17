@@ -1,0 +1,67 @@
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Change Password</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <div class="input-group col-sm-8">
+                        <div>
+                            <label>Current password</label>
+                            <input class="form-control" type="password" ng-model="oldPassword" required></div>
+                        <div>
+                            <label>New Password</label>
+                            <input class="form-control" type="password" ng-model="newPassword1" required>
+                        </div>
+                        <div>
+                            <label>re-type password</label>
+                            <input class="form-control" type="password" ng-model="newPassword2" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                        ng-click="$root.changePassword(oldPassword, newPassword1,newPassword2)">Change
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form clas="form-group" style="margin-top: 3em">
+    <div class="row">
+        <div class=" col-sm-4 col-md-4 col-lg-3">
+            <div>
+                <label>User Name</label></div>
+            <div style="color: grey">
+                <label ng-show="$root.userVaribale===true">{{$root.user}}</label></div>
+            <div ng-show="$root.userVaribale===false">
+                <div class="input-group col-sm-12">
+                    <input class="form-control" type="text" ng-model="$root.user" required>
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="$root.changeUsername()"><i
+                                class="glyphicon glyphicon-ok"></i>
+                        </button>
+                        <button type="button" class="btn btn-default"
+                                ng-click="$root.userVaribale=true"><i
+                                class="glyphicon glyphicon-remove"></i></button>
+                    </div>
+                </div>
+            </div>
+            <a role="button" ng-click="$root.userVaribale=false">edit</a>
+
+            <div style="margin-top: 1em;">
+                <label>Password</label>
+                <div>
+                    <a role="button" data-toggle="modal" data-target="#myModal">edit</a>
+                </div>
+
+
+            </div>
+            <div style="margin: 2em"><a href="#/filter/all" role="button" class="btn btn-success" type="button">Done</a></div>
+        </div>
+    </div>
+</form>
