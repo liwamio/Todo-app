@@ -31,7 +31,7 @@
                 return $q(function (resolve, reject) {
                     localforage.getItem(authConfig.key).then(function (value) {
 
-                        if (value === null || value === false) {
+                        if (value.loggedIn === null || value.loggedIn === false) {
                             reject();
                             $location.path(authConfig.pathOnFail).replace();
                         } else {

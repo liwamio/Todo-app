@@ -39,12 +39,15 @@
 
                         switch ((filter.toUpperCase())) {
                             case 'ALL':
+                                $rootScope.filter='All';
                                 return true;
 
                             case 'DONE':
+                                $rootScope.filter='Done';
                                 return task.done;
 
                             case 'UNDONE':
+                                $rootScope.filter='Undone';
                                 return !task.done;
 
                             default:
@@ -131,7 +134,6 @@
                 return;
             }
             alert('password changed successfully!');
-
             $('.modal-backdrop').remove();
             Authenticate.logOut();
             $rootScope.oldPassword, $rootScope.newPassword1, $rootScope.newPassword2 = '';
