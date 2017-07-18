@@ -19,15 +19,20 @@
                 return {
 
                     addTask: function (task) {
-                        taskList.push({
-                            id: Date.now(),
-                            task: task,
-                            done: false,
-                            edit: false
-                        });
-                        syncToLocalStorage().then(function () {
-                            $rootScope.$emit(EVENT);
-                            return angular.copy(taskList);
+                        return new Promise(function(resolve, reject) {
+                            taskList.push({
+                                id: Date.now(),
+                                task: task,
+                                done: false,
+                                edit: false
+                            });
+
+                            syncToLocalStorage().then(function () {
+                                $rootScope.$emit(EVENT);
+                                resolve(angular.copy(taskList));
+                            }, function(err) {
+                                reject(err);
+                            });
                         });
 
                     },

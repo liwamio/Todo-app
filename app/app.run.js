@@ -76,8 +76,15 @@
 
         $rootScope.add = function () {
             if($rootScope.task.length !== 0) {
-                $rootScope.taskList = Todo.addTask($rootScope.task);
-                $rootScope.task = '';
+                Todo
+                    .addTask($rootScope.task)
+                    .then(function(taskList) {
+                        $timeout(function() {
+                            $rootScope.task = '';
+                        });
+                    }, function(err) {
+                        console.log('something bad happened', err);
+                    });
             }
         };
 
