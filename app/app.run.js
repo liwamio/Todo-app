@@ -74,10 +74,11 @@
             }
         });
 
-        $rootScope.add = function (e) {
-            e.preventDefault();
-            $rootScope.taskList = Todo.addTask($rootScope.task);
-            $rootScope.task = '';
+        $rootScope.add = function () {
+            if($rootScope.task.length !== 0) {
+                $rootScope.taskList = Todo.addTask($rootScope.task);
+                $rootScope.task = '';
+            }
         };
 
         $rootScope.remove = function (taskId) {
@@ -120,7 +121,9 @@
         });
 
         $rootScope.changePassword = function (oldPass, newPass1, newPass2) {
-            if (Authenticate.getPassword($rootScope.user) === oldPass) {
+            let shaObj= new jsSHA("SHA-256","TEXT");
+            shaObj.update(oldPass);
+            if (Authenticate.getPassword($rootScope.user) === shaObj.getHash('HEX')) {
                 if (newPass1 === newPass2) {
                     Authenticate.changePassword($rootScope.user, newPass1);
                 }

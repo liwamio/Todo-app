@@ -19,9 +19,6 @@
                 return {
 
                     addTask: function (task) {
-                        if (task.length === 0) {
-                            return taskList;
-                        }
                         taskList.push({
                             id: Date.now(),
                             task: task,
@@ -30,8 +27,9 @@
                         });
                         syncToLocalStorage().then(function () {
                             $rootScope.$emit(EVENT);
+                            return angular.copy(taskList);
                         });
-                        return angular.copy(taskList);
+
                     },
                     getTask: function () {
                         return new Promise(function (resolve, reject) {

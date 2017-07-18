@@ -2,6 +2,7 @@
 /**
  * Created by user on 7/3/2017.
  */
+
 (function (angular) {
     angular.module('AuthenticateService', []);
     angular.module('AuthenticateService')
@@ -31,7 +32,10 @@
             getStatus: ['$q', '$location', function ($q, $location) {
                 return $q(function (resolve, reject) {
                     localforage.getItem(authConfig.key).then(function (value) {
-
+                        if(value === null){
+                            $location.path(authConfig.pathOnFail).replace();
+                            return;
+                        }
                         if (value.loggedIn === null || value.loggedIn === false) {
                             reject();
                             $location.path(authConfig.pathOnFail).replace();
@@ -46,9 +50,11 @@
                 return {
 
                     logIn: function (username, password) {
+                        let shaObj= new jsSHA("SHA-256","TEXT");
                         return new Promise(function (resolve, reject) {
                             for (let i = 0; i < users.length; i++) {
-                                if (username === users[i].userName && password === users[i].password) {
+                                shaObj.update(password);
+                                if (username === users[i].userName && users[i].password === shaObj.getHash("HEX")) {
                                     currentUser.loggedIn = true;
                                     currentUser.userName = users[i].userName;
                                     currentUser.id = users[i].id;
@@ -69,6 +75,7 @@
                     logOut: function () {
                         currentUser.loggedIn = false;
                         currentUser.userName = '';
+                        currentUser.id = '';
                         localforage.setItem(authConfig.key, currentUser).then(function () {
                             $location.path(authConfig.pathOnFail).replace();
                             $rootScope.$apply();
@@ -98,7 +105,9 @@
                     changePassword: function (userName, newPass) {
                         for (let i = 0; i < users.length; i++) {
                             if (users[i].userName === userName) {
-                                users[i].password = newPass;
+                                let shaObj= new jsSHA("SHA-256","TEXT");
+                                shaObj.update(newPass);
+                                users[i].password = shaObj.getHash("HEX");
                                 syncToLocalStorage().then(function () {
                                     $rootScope.$emit(EVENT);
                                 })
@@ -177,7 +186,9 @@
                                     password: '1234',
                                     id: Date.now(),
                                     loggedIn: false});
-
+                                let shaObj= new jsSHA("SHA-256","TEXT");
+                                shaObj.update(users[0].password);
+                                users[0].password = shaObj.getHash("HEX");
                                 localforage.setItem(userData.key,users).then(function() {
                                     localforage.setItem(authConfig.key, currentUser);
                                     syncToLocalStorage().then(function () {
