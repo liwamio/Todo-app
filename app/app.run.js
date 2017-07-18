@@ -14,6 +14,7 @@
             description: 'LIWAM',
         });
         $rootScope.task = '';
+        $rootScope.id = '';
         $rootScope.taskList = [];
         $rootScope.taskListLength = 0;
         $rootScope.compeleted = 0;
@@ -109,9 +110,14 @@
             $rootScope.taskList[index].edit = true;
         };
 
-        $rootScope.updated = function (index) {
-            Todo.edit($rootScope.taskList[index].task, index);
-            $rootScope.taskList[index].edit = false;
+        $rootScope.updated = function (id) {
+            let index = -1;
+            for(let i =0; i<$rootScope.taskList.length; i++){
+                if($rootScope.taskList[i].id === id)
+                Todo.edit($rootScope.taskList[i].task, id);
+                $rootScope.taskList[i].edit = false;
+            }
+
         };
 
         Todo.subscribe($rootScope, function () {

@@ -19,7 +19,7 @@
                 return {
 
                     addTask: function (task) {
-                        return new Promise(function(resolve, reject) {
+                        return new Promise(function (resolve, reject) {
                             taskList.push({
                                 id: Date.now(),
                                 task: task,
@@ -30,7 +30,7 @@
                             syncToLocalStorage().then(function () {
                                 $rootScope.$emit(EVENT);
                                 resolve(angular.copy(taskList));
-                            }, function(err) {
+                            }, function (err) {
                                 reject(err);
                             });
                         });
@@ -76,11 +76,17 @@
                         });
                     },
 
-                    edit: function (updatedTask, index) {
-                        taskList[index].task = updatedTask;
-                        syncToLocalStorage().then(function () {
-                            $rootScope.$emit(EVENT);
-                        });
+                    edit: function (updatedTask, id) {
+                        for (let i = 0; i < taskList.length; i++) {
+                            if (taskList[i].id === id) {
+                                console.log('task to be updated - ' + taskList[i].task)
+                                taskList[i].task = updatedTask;
+                                syncToLocalStorage().then(function () {
+                                    $rootScope.$emit(EVENT);
+                                });
+                            }
+                        }
+
                     },
 
                     subscribe: function (scope, callback) {
