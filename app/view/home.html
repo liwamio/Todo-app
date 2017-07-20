@@ -1,35 +1,6 @@
+
 <div style="user-select: none">
-    <nav class="navbar navbar-default navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#userInfo"
-                        aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            </div>
-            <div class="collapse navbar-collapse" id="userInfo">
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                                            aria-expanded="false">{{$root.user}}<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a role="button" href="#/AccountSetting">Account Setting</a></li>
 
-                            <li class="divider"></li>
-                            <li><a role="button" ng-click="$root.logOut()">Log out</a></li>
-                        </ul>
-                    </li>
-                </ul>
-
-            </div>
-        </div>
-    </nav>
-
-    <div class="page-header">
-
-    </div>
 
     <form class="form-group" ng-submit="$root.add()">
         <div class="row">
@@ -43,14 +14,16 @@
                     </div>
                 </div>
             </div>
-                <div class="col-xs-offset-2 col-sm-offset-9 col-md-offset-9 col-lg-offset-8">
-                    <span ng-bind="compeleted"></span>/<span ng-bind="taskListLength"></span>
-                </div>
+
+            <div style="margin-top: 0.5em;" class="col-xs-offset-1 col-sm-offset-7 col-md-offset-6 col-lg-offset-8">
+                <span  ng-bind="compeleted"></span>/<span ng-bind="taskListLength"></span>
+            </div>
+
 
         </div>
     </form>
 
-    <div class="row">
+    <div class="row" style="margin-bottom: 1em">
         <div class=" col-xs-12 col-sm-offset-3 col-sm-4 col-md-offset-3 col-md-4 col-lg-offset-4 col-lg-4">
             <div class="btn-group btn-group-justified" role="group" aria-label="Justified button group">
                 <a href="#/filter/All" class="btn btn-default" ng-class="{'active': $root.filter === 'All'}"
@@ -65,46 +38,50 @@
 
 
     <div class="row">
+
         <div class="col-xs-12 col-sm-offset-3 col-sm-4 col-md-offset-3 col-md-4 col-lg-offset-4 col-lg-4">
             <ul class="list-group ">
                 <li class="list-group-item" ng-repeat="task in taskList track by $index">
                     <div ng-show="task.edit===false">
-            <span ng-dblclick="$root.clicked($index)">
-                <input type="checkbox" ng-click="$root.toggle(task.id)"
+
+                        <div class="row">
+                <span style=" display: inline-block; width:60%; white-space: nowrap; overflow: hidden;text-overflow: ellipsis;" class="col-xs-12 col-sm-4 col-md-4 col-lg-4"  ng-dblclick="$root.clicked($index)">
+                <input  type="checkbox" ng-click="$root.toggle(task.id)"
                        ng-model="task.done">
-                <span ng-bind="task.task"></span>
+                <span  ng-bind="task.task"></span>
             </span>
 
-                        <div class="btn-group" role="group" aria-label="Third group">
-                            <button class="btn btn-default" type="button" ng-click="$root.remove(task.id)"><i
-                                    class="glyphicon glyphicon-trash"></i></button>
+                            <span class="col-xs-12 col-sm-4 col-md-4 col-lg-4" style="width:40%; display: flex; flex-flow: row ; justify-content: flex-end; align-items: flex-end">
+                             <div class="btn-group" role="group" aria-label="Third group">
+                                <button class="btn btn-default" type="button" ng-click="$root.clicked($index)"><i
+                                        class="glyphicon glyphicon-edit"></i></button>
+                             </div>
+                             <div class="btn-group" role="group" aria-label="Third group">
+                                <button class="btn btn-default" type="button" ng-click="$root.remove(task.id)"><i
+                                        class="glyphicon glyphicon-trash"></i></button>
+                             </div>
+                        </span>
                         </div>
-                        <div class="btn-group" id="editForSmallScreen" role="group" aria-label="Third group">
-                            <button class="btn btn-default" type="button" ng-click="task.edit=true"><i
-                                    class="glyphicon glyphicon-edit"></i></button>
-                        </div>
-
                     </div>
                     <div ng-show="task.edit===true" class="row">
                         <div class="form-horizontal">
-                            <div class="input-group col-xs-11 col-sm-12" style="padding: 0 1em ">
-                                <input type="text" class="form-control" ng-model="taskList[$index].task">
-                                <div class="input-group-btn">
-                                    <button type="button" class="btn btn-default" ng-click="$root.updated(task.id)">
-                                        <i
-                                                class="glyphicon glyphicon-ok"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-default"
-                                            ng-click="task.edit=false"><i
-                                            class="glyphicon glyphicon-remove"></i></button>
+                            <div style="padding: 0 1em ">
+                                <div class="input-group"><input type="text" class="form-control"
+                                                                ng-model="taskList[$index].task">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="$root.updated(task.id)">
+                                            <i class="glyphicon glyphicon-ok"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-default"
+                                                ng-click="$root.cancel(task.id)"><i
+                                                class="glyphicon glyphicon-remove"></i></button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </li>
             </ul>
-        </div>
-    </div>
-
-
-</div>
+        </div> <!--column-->
+    </div> <!--row-->
+</div> <!--user-select-->
