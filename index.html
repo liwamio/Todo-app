@@ -5,10 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>Todo App</title>
     <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+
     <link rel="icon" type="image/png" href="app/image/Todo.png">
 </head>
-<body ng-app="Liwam" class="container">
+<body ng-app="Liwam" class="container-fluid">
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#userInfo"
+                    aria-expanded="false">
+                <span class="sr-only"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#/filter/all">Todo App</a>
+        </div>
+        <div class="collapse navbar-collapse" id="userInfo">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false"><span ng-bind="$root.user"></span><b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a role="button" href="#/AccountSetting">Account Setting</a></li>
 
+                        <li class="divider"></li>
+                        <li><a role="button" ng-click="$root.logOut()">Log out</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+<div class="page-header">
+</div>
 <ng-view></ng-view>
 
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
