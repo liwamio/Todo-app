@@ -79,7 +79,6 @@
                     edit: function (updatedTask, id) {
                         for (let i = 0; i < taskList.length; i++) {
                             if (taskList[i].id === id) {
-                                console.log('task to be updated - ' + taskList[i].task)
                                 taskList[i].task = updatedTask;
                                 syncToLocalStorage().then(function () {
                                     $rootScope.$emit(EVENT);

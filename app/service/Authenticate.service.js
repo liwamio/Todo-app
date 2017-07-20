@@ -154,16 +154,18 @@
                     },
 
                     changeUsername: function (userName) {
-                        console.log("username " + userName)
                         let index = -1;
                         localforage.getItem(authConfig.key).then(function (value) {
                             for (let i = 0; i < users.length; i++) {
                                 if (users[i].id === value.id) {
                                     index = i;
+                                    console.log('inside if')
                                     if (users[i].userName === userName && i !== index) {
                                         alert('username already exists');
                                     }
                                     else {
+                                        console.log('current username '+users[index].userName)
+                                        console.log('second username '+ userName)
                                         users[index].userName = userName;
                                         currentUser.userName = userName;
                                         localforage.setItem(authConfig.key, currentUser).then(function () {
@@ -172,6 +174,9 @@
                                             })
                                         })
                                     }
+                                }
+                                else{
+                                    console.log('inside else')
                                 }
                             }
                         })

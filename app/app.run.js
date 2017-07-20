@@ -20,12 +20,12 @@
         $rootScope.compeleted = 0;
         $rootScope.filter = 'All';
         $rootScope.user = '';
+        $rootScope.user_edit = $rootScope.user;
         $rootScope.userVaribale = true;
         $rootScope.oldPassword = '';
         $rootScope.newPassword1 = '';
         $rootScope.newPassword2 = '';
 
-        //Authenticate.addUser('user', '1234');
         angular.element(function () {
             Authenticate.boot();
         });
@@ -36,7 +36,7 @@
             }
 
             Todo.getTask().then(function (tasks) {
-                $timeout(function() {
+                $timeout(function () {
                     $rootScope.compeleted = tasks.filter(function (task) {
                         return task.done;
                     }).length;
@@ -45,15 +45,15 @@
                     $rootScope.taskList = tasks.filter(function (task) {
                         switch ((filter.toUpperCase())) {
                             case 'ALL':
-                                $rootScope.filter='All';
+                                $rootScope.filter = 'All';
                                 return true;
 
                             case 'DONE':
-                                $rootScope.filter='Done';
+                                $rootScope.filter = 'Done';
                                 return task.done;
 
                             case 'UNDONE':
-                                $rootScope.filter='Undone';
+                                $rootScope.filter = 'Undone';
                                 return !task.done;
 
                             default:
@@ -66,8 +66,8 @@
 
         $rootScope.$on('$routeChangeSuccess', function (event, toRoute) {
             if (Object.prototype.hasOwnProperty.call(toRoute.params, 'filter')) {
-                    $rootScope.filter = toRoute.params.filter;
-                    compute(toRoute.params.filter);
+                $rootScope.filter = toRoute.params.filter;
+                compute(toRoute.params.filter);
             }
             else {
                 $rootScope.filter = 'All';
@@ -76,14 +76,14 @@
         });
 
         $rootScope.add = function () {
-            if($rootScope.task.length !== 0) {
+            if ($rootScope.task.length !== 0) {
                 Todo
                     .addTask($rootScope.task)
-                    .then(function(taskList) {
-                        $timeout(function() {
+                    .then(function (taskList) {
+                        $timeout(function () {
                             $rootScope.task = '';
                         });
-                    }, function(err) {
+                    }, function (err) {
                         console.log('something bad happened', err);
                     });
             }
@@ -110,11 +110,23 @@
             $rootScope.taskList[index].edit = true;
         };
 
+        $rootScope.cancel = function (id) {
+            for (let i = 0; i < $rootScope.taskList.length; i++) {
+                if ($rootScope.taskList[i].id === id) {
+                    Todo.getTask().then(function (value) {
+                        $timeout(function () {
+                            $rootScope.taskList[i].task = value[i].task
+                        })
+                    });
+                    $rootScope.taskList[i].edit = false
+                }
+            }
+        };
+
         $rootScope.updated = function (id) {
-            let index = -1;
-            for(let i =0; i<$rootScope.taskList.length; i++){
-                if($rootScope.taskList[i].id === id)
-                Todo.edit($rootScope.taskList[i].task, id);
+            for (let i = 0; i < $rootScope.taskList.length; i++) {
+                if ($rootScope.taskList[i].id === id)
+                    Todo.edit($rootScope.taskList[i].task, id);
                 $rootScope.taskList[i].edit = false;
             }
 
@@ -128,13 +140,13 @@
             Authenticate.getUsers();
             Authenticate.getLoggedInUser().then(function (value) {
                 $timeout(function () {
-                    $rootScope.user = value.userName;
+                    $rootScope.user = $rootScope.user_edit= value.userName;
                 });
             })
         });
 
         $rootScope.changePassword = function (oldPass, newPass1, newPass2) {
-            let shaObj= new jsSHA("SHA-256","TEXT");
+            let shaObj = new jsSHA("SHA-256", "TEXT");
             shaObj.update(oldPass);
             if (Authenticate.getPassword($rootScope.user) === shaObj.getHash('HEX')) {
                 if (newPass1 === newPass2) {
@@ -158,7 +170,8 @@
         };
 
         $rootScope.changeUsername = function () {
-            Authenticate.changeUsername($rootScope.user);
+            Authenticate.changeUsername($rootScope.user_edit);
+            console.log($rootScope.user_edit)
             $rootScope.userVaribale = true;
         }
     }
